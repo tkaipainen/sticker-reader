@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const video = document.getElementById("video");
     const canvas = document.getElementById("canvas");
     const scanButton = document.getElementById("scanButton");
-    const result = document.getElementById("result");
     const idList = document.getElementById("idList");
 
     async function startCamera() {
@@ -64,6 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 🔍 Käytä OCR:ää tekstin tunnistamiseen
     function recognizeText(imageData) {
+        const result = document.getElementById("result");
         result.innerText = "Tunnistetaan ID:tä...";
         Tesseract.recognize(
             imageData,

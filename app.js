@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // 💾 Tallenna ID localStorageen
     function saveID(id) {
         let ids = JSON.parse(localStorage.getItem("savedIDs")) || [];
-        ids.push(id);
+        ids.unshift(id);
         localStorage.setItem("savedIDs", JSON.stringify(ids));
         renderIDList();
     }

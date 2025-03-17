@@ -20,6 +20,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 📷 Ota kuva ja käsittele OCR:llä
     scanButton.addEventListener("click", () => {
+        // 🔄 Lisää animaatio napille
+        scanButton.classList.add("loading");
+        scanButton.innerHTML = '<i class="material-icons">autorenew</i> Skannaa...';
+        scanButton.disabled = true;
+
         captureFrame();
     });
 
@@ -82,6 +87,11 @@ document.addEventListener("DOMContentLoaded", () => {
         }).catch(error => {
             console.error("OCR epäonnistui", error);
             result.innerText = "Virhe OCR-käsittelyssä!";
+        }).finally(() => {
+            // ✅ Poistetaan animaatio napilta ja palautetaan normaali teksti
+            scanButton.classList.remove("loading");
+            scanButton.innerHTML = '<i class="material-icons">camera</i> Skannaa ID';
+            scanButton.disabled = false;
         });
     }
 

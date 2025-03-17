@@ -105,11 +105,11 @@ li.new {
     animation: fadeIn 0.3s ease-in-out;
 }
 
-/* ID-ikonin tyyli */
+/* ID:n vasemman reunan ikoni */
 li .id-icon {
-    color: #2196F3;
     font-size: 20px;
     margin-right: 10px;
+    color: #4CAF50; /* Vihreä väri, näyttää modernilta */
 }
 
 /* Fade-in animaatio */

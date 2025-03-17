@@ -6,16 +6,26 @@ document.addEventListener("DOMContentLoaded", () => {
     const result = document.getElementById("result");
     const idList = document.getElementById("idList");
 
-    // 📸 Käynnistä kamera
+   document.addEventListener("DOMContentLoaded", () => {
+    const video = document.getElementById("video");
+
     async function startCamera() {
         try {
-            const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
+            const stream = await navigator.mediaDevices.getUserMedia({
+                video: { facingMode: "environment" }
+            });
             video.srcObject = stream;
+            video.onloadedmetadata = () => {
+                video.play();
+            };
         } catch (error) {
-            console.error("Kameran käyttö estetty", error);
-            alert("Ei pääsyä kameraan!");
+            console.error("Kameran käyttö estetty:", error);
+            alert("Ei pääsyä kameraan! Tarkista oikeudet.");
         }
     }
+
+    startCamera();
+});
 
     // 📷 Ota kuva ja käsittele OCR:llä
     scanButton.addEventListener("click", () => {

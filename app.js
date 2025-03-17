@@ -24,9 +24,6 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    startCamera();
-});
-
     // 📷 Ota kuva ja käsittele OCR:llä
     scanButton.addEventListener("click", () => {
         captureFrame();

@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const video = document.getElementById("video");
     const canvas = document.getElementById("canvas");
     const scanButton = document.getElementById("scanButton");
-    const idList = document.getElementById("idList");
 
     async function startCamera() {
         try {
@@ -105,6 +104,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 📜 Näytä tallennetut ID:t
     function renderIDList() {
+        const idList = document.getElementById("idList");
         idList.innerHTML = "";
         let ids = JSON.parse(localStorage.getItem("savedIDs")) || [];
         ids.forEach(id => {

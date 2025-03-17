@@ -60,4 +60,74 @@ video {
     border-radius: 8px;
     cursor: pointer;
     margin-top: 15px;
-    box-shadow: 
+}
+
+        /* ID-listan otsikko */
+h2 {
+    font-size: 18px;
+    margin-top: 20px;
+    color: #333;
+    text-align: left;
+    padding-left: 10px;
+}
+
+/* Lista */
+ul {
+    list-style: none;
+    padding: 0;
+    margin-top: 10px;
+}
+
+/* Jokainen ID näkyy korttina */
+li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: white;
+    padding: 12px 15px;
+    margin: 5px 0;
+    border-radius: 8px;
+    box-shadow: 0px 3px 5px rgba(0, 0, 0, 0.1);
+    font-size: 16px;
+    font-weight: bold;
+    color: #333;
+    transition: all 0.2s ease-in-out;
+}
+
+/* Animaatio kun uusi ID lisätään */
+li.new {
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+/* Poistonappi jokaiselle ID:lle */
+li .delete-btn {
+    background: none;
+    border: none;
+    color: red;
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+li .delete-btn:hover {
+    color: darkred;
+}
+
+/* ID-ikonin tyyli */
+li .id-icon {
+    color: #2196F3;
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+/* Fade-in animaatio */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-5px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

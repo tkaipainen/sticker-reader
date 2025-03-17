@@ -1,10 +1,12 @@
 document.addEventListener("DOMContentLoaded", () => {
     const video = document.getElementById("video");
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
     const scanButton = document.getElementById("scanButton");
     const result = document.getElementById("result");
     const idList = document.getElementById("idList");
 
-    // 📸 Pyydä käyttöoikeus kameraan ja näytä se videossa
+    // 📸 Käynnistä kamera
     async function startCamera() {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({ video: { facingMode: "environment" } });
@@ -15,14 +17,40 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     }
 
-    // 🔍 Simuloi ID:n lukemista (QR-koodin skannauksen voi lisätä myöhemmin)
+    // 📷 Ota kuva ja käsittele OCR:llä
     scanButton.addEventListener("click", () => {
-        let fakeID = "ID-" + Math.floor(Math.random() * 100000);
-        result.innerText = "Luettu ID: " + fakeID;
-        saveID(fakeID);
+        captureFrame();
     });
 
-    // 💾 Tallenna ID IndexedDB:hen
+    function captureFrame() {
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        let imageData = canvas.toDataURL("image/png");
+
+        recognizeText(imageData);
+    }
+
+    // 🔍 Käytä OCR:ää tekstin tunnistamiseen
+    function recognizeText(imageData) {
+        result.innerText = "Tunnistetaan ID:tä...";
+        Tesseract.recognize(
+            imageData,
+            "eng", // Voit lisätä muita kieliä (esim. "fin" suomi)
+            {
+                logger: m => console.log(m)
+            }
+        ).then(({ data: { text } }) => {
+            let cleanedText = text.replace(/\s+/g, "").trim(); // Poistetaan tyhjät merkit
+            result.innerText = "Luettu ID: " + cleanedText;
+            if (cleanedText) saveID(cleanedText);
+        }).catch(error => {
+            console.error("OCR epäonnistui", error);
+            result.innerText = "Virhe OCR-käsittelyssä!";
+        });
+    }
+
+    // 💾 Tallenna ID localStorageen
     function saveID(id) {
         let ids = JSON.parse(localStorage.getItem("savedIDs")) || [];
         ids.push(id);

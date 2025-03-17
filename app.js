@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", () => {
     async function startCamera() {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({
-                video: { facingMode: "environment" }
+                video: { facingMode: "environment", focusMode: "continuous" }
             });
             video.srcObject = stream;
             video.onloadedmetadata = () => {

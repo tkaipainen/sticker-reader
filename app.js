@@ -46,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
         result.innerText = "Tunnistetaan ID:tä...";
         Tesseract.recognize(
             imageData,
-            "fin", // Voit lisätä muita kieliä (esim. "fin" suomi)
+            "eng", // Voit lisätä muita kieliä (esim. "fin" suomi)
             {
                 logger: m => console.log(m)
             }

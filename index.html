@@ -3,24 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>PWA Scanner</title>
+    <title>PWA OCR Scanner</title>
+
+    <!-- Google Fonts ja Material Icons -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    
+    <!-- Custom CSS -->
     <link rel="stylesheet" href="style.css">
+    
     <link rel="manifest" href="manifest.json">
-    <link rel="icon" type="image/png" href="/icons/icon-192x192.png">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.0.2/tesseract.min.js"></script>
-    <script src="app.js"></script>
 </head>
 <body>
 
- <h1>OCR ID Scanner</h1>
+    <div class="container">
+        <h1><i class="material-icons">qr_code_scanner</i> OCR ID Scanner</h1>
+        
+        <div class="video-container">
+            <video id="video" autoplay playsinline muted></video>
+        </div>
 
-    <video id="video" autoplay playsinline muted></video>
-    <canvas id="canvas" style="display: none;"></canvas>
+        <button id="scanButton" class="btn">
+            <i class="material-icons">camera</i> Skannaa ID
+        </button>
 
-    <button id="scanButton">Skannaa ID</button>
-    <p id="result"></p>
+        <p id="result">Ei vielä skannattuja ID:itä</p>
 
-    <ul id="idList"></ul>
+        <h2>Skannatut ID:t</h2>
+        <ul id="idList"></ul>
+    </div>
 
-  </body>
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js"></script>
+    
+    <!-- Tesseract.js OCR -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tesseract.js/4.0.2/tesseract.min.js"></script>
+
+    <!-- Custom JavaScript -->
+    <script src="app.js"></script>
+
+</body>
 </html>

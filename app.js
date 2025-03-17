@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
             let gray = 0.299 * r + 0.587 * g + 0.114 * b;
 
             // ⚡ Paranna kontrastia
-            let threshold = 128; // Voit säätää tätä
+            let threshold = 180; // Voit säätää tätä
             let binary = gray > threshold ? 255 : 0;
 
             data[i] = data[i + 1] = data[i + 2] = binary;

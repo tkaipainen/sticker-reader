@@ -6,9 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const result = document.getElementById("result");
     const idList = document.getElementById("idList");
 
-   document.addEventListener("DOMContentLoaded", () => {
-    const video = document.getElementById("video");
-
     async function startCamera() {
         try {
             const stream = await navigator.mediaDevices.getUserMedia({

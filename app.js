@@ -97,7 +97,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function extractValidID(text) {
         // 🧹 Puhdistetaan OCR-tulokset (poistetaan välilyönnit ja muut roskat)
-        let cleanedText = text.replace(/\s+/g, "").trim();
+        // let cleanedText = text.replace(/\s+/g, "").trim();
+        let cleanedText = text.trim();
 
         // 🔍 Etsitään kelvollinen 16-numeroinen ID
         let match = cleanedText.match(/(\d{16})/);

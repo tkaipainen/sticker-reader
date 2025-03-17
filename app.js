@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 result.innerText = "Luettu ID: " + cleanedText;
                 saveID(cleanedText);
             } else {
-                result.innerText = "Ei kelvollista ID:tä löytynyt.";
+                result.innerText = "Ei löytynyt kelvollista ID:tä.";
             }
         }).catch(error => {
             console.error("OCR epäonnistui", error);
@@ -114,21 +114,12 @@ document.addEventListener("DOMContentLoaded", () => {
             // ✅ ID:n näyttäminen korttimaisena, mukana FontAwesome-ikoni
             li.innerHTML = `
                 <span class="id-icon">🔢</span> ${id}
-                <button class="delete-btn" onclick="deleteID('${id}')">🗑</button>
             `;
 
             idList.appendChild(li);
         });
     }
-
-    function deleteID(id) {
-        let ids = JSON.parse(localStorage.getItem("savedIDs")) || [];
-           let updatedIDs = ids.filter(storedId => storedId !== id); // Poistetaan valittu ID
-
-        localStorage.setItem("savedIDs", JSON.stringify(updatedIDs));
-        renderIDList(); // Päivitetään lista
-    }
-
+    
     startCamera();
     renderIDList();
 });

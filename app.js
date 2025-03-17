@@ -1,5 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
     const video = document.getElementById("video");
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
     const scanButton = document.getElementById("scanButton");
     const result = document.getElementById("result");
     const idList = document.getElementById("idList");
@@ -10,37 +12,65 @@ document.addEventListener("DOMContentLoaded", () => {
                 video: { facingMode: "environment" }
             });
             video.srcObject = stream;
-            video.onloadedmetadata = () => video.play();
+            video.onloadedmetadata = () => {
+                video.play();
+            };
         } catch (error) {
             console.error("Kameran käyttö estetty:", error);
             alert("Ei pääsyä kameraan! Tarkista oikeudet.");
         }
     }
 
+    // 📷 Ota kuva ja käsittele OCR:llä
     scanButton.addEventListener("click", () => {
         captureFrame();
     });
 
     function captureFrame() {
-        const canvas = document.createElement("canvas");
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
-        const ctx = canvas.getContext("2d");
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        
+        // 📷 Kuvan esikäsittely
+        let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        let processedData = preprocessImage(imageData);
+        ctx.putImageData(processedData, 0, 0);
+        
+        let imageURL = canvas.toDataURL("image/png");
 
-        let imageUrl = canvas.toDataURL("image/png");
-        recognizeText(imageUrl);
+        recognizeText(imageURL);
     }
 
+    function preprocessImage(imageData) {
+        let data = imageData.data;
+
+        for (let i = 0; i < data.length; i += 4) {
+            let r = data[i];
+            let g = data[i + 1];
+            let b = data[i + 2];
+
+            // 🖤 Muunna harmaasävyksi (Luma-menetelmä)
+            let gray = 0.299 * r + 0.587 * g + 0.114 * b;
+
+            // ⚡ Paranna kontrastia
+            let threshold = 150; // Voit säätää tätä
+            let binary = gray > threshold ? 255 : 0;
+
+            data[i] = data[i + 1] = data[i + 2] = binary;
+        }
+
+        return imageData;
+    }
+
+    // 🔍 Käytä OCR:ää tekstin tunnistamiseen
     function recognizeText(imageData) {
         result.innerText = "Tunnistetaan ID:tä...";
-
         Tesseract.recognize(
             imageData,
-            "eng",
+            "fin", // Voit lisätä muita kieliä (esim. "fin" suomi)
             {
                 logger: m => console.log(m),
-                tessedit_char_whitelist: "SIN0123456789"
+                tessedit_char_whitelist: "SIN0123456789" // Estetään turhat merkit
             }
         ).then(({ data: { text } }) => {
             let cleanedText = extractValidID(text);
@@ -57,31 +87,30 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function extractValidID(text) {
+        // 🧹 Puhdistetaan OCR-tulokset (poistetaan välilyönnit ja muut roskat)
         let cleanedText = text.replace(/\s+/g, "").trim();
+
+        // 🔍 Etsitään kelvollinen 16-numeroinen ID, jossa voi olla "SIN" edessä
         let match = cleanedText.match(/(?:SIN)?(\d{16})/);
         return match ? match[0] : null;
     }
 
+    // 💾 Tallenna ID localStorageen
     function saveID(id) {
-        db.collection("ids").add({
-            id: id,
-            timestamp: firebase.firestore.FieldValue.serverTimestamp()
-        }).then(() => {
-            console.log("ID tallennettu:", id);
-            renderIDList();
-        }).catch(error => {
-            console.error("Virhe tallennuksessa:", error);
-        });
+        let ids = JSON.parse(localStorage.getItem("savedIDs")) || [];
+        ids.push(id);
+        localStorage.setItem("savedIDs", JSON.stringify(ids));
+        renderIDList();
     }
 
+    // 📜 Näytä tallennetut ID:t
     function renderIDList() {
         idList.innerHTML = "";
-        db.collection("ids").orderBy("timestamp", "desc").get().then(snapshot => {
-            snapshot.forEach(doc => {
-                let li = document.createElement("li");
-                li.textContent = doc.data().id;
-                idList.appendChild(li);
-            });
+        let ids = JSON.parse(localStorage.getItem("savedIDs")) || [];
+        ids.forEach(id => {
+            let li = document.createElement("li");
+            li.textContent = id;
+            idList.appendChild(li);
         });
     }
 

@@ -70,16 +70,25 @@ document.addEventListener("DOMContentLoaded", () => {
             "fin", // Voit lisätä muita kieliä (esim. "fin" suomi)
             {
                 logger: m => console.log(m),
-                tessedit_char_whitelist: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-" // Estetään turhat merkit
+                tessedit_char_whitelist: "SIN0123456789" // Estetään turhat merkit
             }
         ).then(({ data: { text } }) => {
-            let cleanedText = text;//.replace(/\s+/g, "").trim(); // Poistetaan tyhjät merkit
+            let cleanedText = extractValidID(text);
             result.innerText = "Luettu ID: " + cleanedText;
             if (cleanedText) saveID(cleanedText);
         }).catch(error => {
             console.error("OCR epäonnistui", error);
             result.innerText = "Virhe OCR-käsittelyssä!";
         });
+    }
+
+    function extractValidID(text) {
+        // 🧹 Puhdistetaan OCR-tulokset (poistetaan välilyönnit ja muut roskat)
+        let cleanedText = text.replace(/\s+/g, "").trim();
+
+        // 🔍 Etsitään kelvollinen 16-numeroinen ID, jossa voi olla "SIN" edessä
+        let match = cleanedText.match(/(?:SIN)?(\d{16})/);
+        return match ? match[0] : null;
     }
 
     // 💾 Tallenna ID localStorageen

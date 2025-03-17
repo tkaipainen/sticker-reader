@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
             imageData,
             "fin", // Voit lisätä muita kieliä (esim. "fin" suomi)
             {
-                logger: m => console.log(m)
+                logger: m => console.log(m),
                 tessedit_char_whitelist: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-" // Estetään turhat merkit
             }
         ).then(({ data: { text } }) => {

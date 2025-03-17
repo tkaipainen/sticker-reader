@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "fin", // Voit lisätä muita kieliä (esim. "fin" suomi)
             {
                 logger: m => console.log(m),
-                tessedit_char_whitelist: "SIN0123456789" // Estetään turhat merkit
+                tessedit_char_whitelist: "0123456789" // Estetään turhat merkit
             }
         ).then(({ data: { text } }) => {
             let cleanedText = extractValidID(text);
@@ -99,8 +99,8 @@ document.addEventListener("DOMContentLoaded", () => {
         // 🧹 Puhdistetaan OCR-tulokset (poistetaan välilyönnit ja muut roskat)
         let cleanedText = text.replace(/\s+/g, "").trim();
 
-        // 🔍 Etsitään kelvollinen 16-numeroinen ID, jossa voi olla "SIN" edessä
-        let match = cleanedText.match(/(?:SIN)?(\d{16})/);
+        // 🔍 Etsitään kelvollinen 16-numeroinen ID
+        let match = cleanedText.match(/(\d{16})/);
         return match ? match[0] : null;
     }
 

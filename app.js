@@ -113,7 +113,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
             // ✅ ID:n näyttäminen korttimaisena, mukana FontAwesome-ikoni
             li.innerHTML = `
-                <span class="id-icon">🔢</span> ${id}
+                <span class="id-icon material-icons">confirmation_number</span> ${id}
             `;
 
             idList.appendChild(li);

@@ -1,31 +1,62 @@
+/* Perustyylit */
 body {
-    font-family: Arial, sans-serif;
-    text-align: center;
+    font-family: 'Roboto', sans-serif;
     background: #f4f4f4;
+    color: #333;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+}
+
+/* Kontaineri */
+.container {
+    max-width: 400px;
+    margin: 30px auto;
+    background: white;
     padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Otsikko */
+h1 {
+    font-size: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+/* Video-alue */
+.video-container {
+    position: relative;
+    width: 100%;
+    border-radius: 10px;
+    overflow: hidden;
 }
 
 video {
     width: 100%;
-    max-width: 400px;
-    border: 2px solid black;
-    margin-bottom: 10px;
+    max-height: 250px;
+    border-radius: 10px;
+    object-fit: cover;
+    border: 2px solid #2196F3;
 }
 
-button {
-    padding: 10px;
+/* Skannaa-nappi */
+.btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 15px;
     font-size: 16px;
+    font-weight: bold;
+    background: #2196F3;
+    color: white;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
-}
-
-ul {
-    list-style-type: none;
-    padding: 0;
-}
-
-li {
-    background: white;
-    padding: 10px;
-    margin: 5px;
-    border: 1px solid #ddd;
-}
+    margin-top: 15px;
+    box-shadow: 

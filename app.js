@@ -37,8 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        //let processedData = preprocessImage(imageData);
-        let processedData = imageData;
+        let processedData = preprocessImage(imageData);
 
         // ✅ Näytetään esikäsitelty kuva käyttöliittymässä
         processedCanvas.width = processedData.width;

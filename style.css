@@ -68,7 +68,23 @@ video {
     background: #1976D2;
 }
 
-        /* ID-listan otsikko */
+/* 🔄 Animaatio OCR-skannauksen aikana */
+.btn.loading {
+    background: #FF9800; /* Muuttaa oranssiksi lukemisen ajaksi */
+    cursor: not-allowed; /* Estää klikkaamisen */
+}
+
+/* 🔄 Pyörivä animaatio ikonille */
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.btn.loading i {
+    animation: spin 1s linear infinite;
+}
+
+/* ID-listan otsikko */
 h2 {
     font-size: 18px;
     margin-top: 20px;

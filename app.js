@@ -40,12 +40,12 @@ document.addEventListener("DOMContentLoaded", () => {
         result.innerText = "Tunnistetaan ID:tä...";
         Tesseract.recognize(
             imageData,
-            "eng", // Voit lisätä muita kieliä (esim. "fin" suomi)
+            "fin", // Voit lisätä muita kieliä (esim. "fin" suomi)
             {
                 logger: m => console.log(m)
             }
         ).then(({ data: { text } }) => {
-            let cleanedText = text.replace(/\s+/g, "").trim(); // Poistetaan tyhjät merkit
+            let cleanedText = text;//.replace(/\s+/g, "").trim(); // Poistetaan tyhjät merkit
             result.innerText = "Luettu ID: " + cleanedText;
             if (cleanedText) saveID(cleanedText);
         }).catch(error => {

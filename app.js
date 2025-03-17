@@ -37,7 +37,8 @@ document.addEventListener("DOMContentLoaded", () => {
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
 
         let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        let processedData = preprocessImage(imageData);
+        //let processedData = preprocessImage(imageData);
+        let processedData = imageData;
 
         // ✅ Näytetään esikäsitelty kuva käyttöliittymässä
         processedCanvas.width = processedData.width;
@@ -60,7 +61,7 @@ document.addEventListener("DOMContentLoaded", () => {
             let gray = 0.299 * r + 0.587 * g + 0.114 * b;
 
             // ⚡ Paranna kontrastia
-            let threshold = 152; // Voit säätää tätä
+            let threshold = 150; // Voit säätää tätä
             let binary = gray > threshold ? 255 : 0;
 
             data[i] = data[i + 1] = data[i + 2] = binary;

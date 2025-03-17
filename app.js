@@ -104,14 +104,29 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // 📜 Näytä tallennetut ID:t
     function renderIDList() {
-        const idList = document.getElementById("idList");
-        idList.innerHTML = "";
+        idList.innerHTML = ""; // Tyhjennetään lista ennen päivitystä
         let ids = JSON.parse(localStorage.getItem("savedIDs")) || [];
+
         ids.forEach(id => {
             let li = document.createElement("li");
-            li.textContent = id;
+            li.classList.add("new"); // Lisää animaatio uuden lisäyksen yhteydessä
+
+            // ✅ ID:n näyttäminen korttimaisena, mukana FontAwesome-ikoni
+            li.innerHTML = `
+                <span class="id-icon">🔢</span> ${id}
+                <button class="delete-btn" onclick="deleteID('${id}')">🗑</button>
+            `;
+
             idList.appendChild(li);
         });
+    }
+
+    function deleteID(id) {
+        let ids = JSON.parse(localStorage.getItem("savedIDs")) || [];
+           let updatedIDs = ids.filter(storedId => storedId !== id); // Poistetaan valittu ID
+
+        localStorage.setItem("savedIDs", JSON.stringify(updatedIDs));
+        renderIDList(); // Päivitetään lista
     }
 
     startCamera();

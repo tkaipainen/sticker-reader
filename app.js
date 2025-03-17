@@ -30,9 +30,36 @@ document.addEventListener("DOMContentLoaded", () => {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        let imageData = canvas.toDataURL("image/png");
+        
+        // 📷 Kuvan esikäsittely
+        let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        let processedData = preprocessImage(imageData);
+        ctx.putImageData(processedData, 0, 0);
+        
+        let imageURL = canvas.toDataURL("image/png");
 
-        recognizeText(imageData);
+        recognizeText(imageURL);
+    }
+
+    function preprocessImage(imageData) {
+        let data = imageData.data;
+
+        for (let i = 0; i < data.length; i += 4) {
+            let r = data[i];
+            let g = data[i + 1];
+            let b = data[i + 2];
+
+            // 🖤 Muunna harmaasävyksi (Luma-menetelmä)
+            let gray = 0.299 * r + 0.587 * g + 0.114 * b;
+
+            // ⚡ Paranna kontrastia
+            let threshold = 150; // Voit säätää tätä
+            let binary = gray > threshold ? 255 : 0;
+
+            data[i] = data[i + 1] = data[i + 2] = binary;
+        }
+
+        return imageData;
     }
 
     // 🔍 Käytä OCR:ää tekstin tunnistamiseen
@@ -43,6 +70,7 @@ document.addEventListener("DOMContentLoaded", () => {
             "fin", // Voit lisätä muita kieliä (esim. "fin" suomi)
             {
                 logger: m => console.log(m)
+                tessedit_char_whitelist: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-" // Estetään turhat merkit
             }
         ).then(({ data: { text } }) => {
             let cleanedText = text;//.replace(/\s+/g, "").trim(); // Poistetaan tyhjät merkit

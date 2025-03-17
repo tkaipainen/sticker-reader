@@ -1,6 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
     const video = document.getElementById("video");
     const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+    const processedCanvas = document.getElementById("processedCanvas");
+    const processedCtx = processedCanvas.getContext("2d");
     const scanButton = document.getElementById("scanButton");
 
     async function startCamera() {
@@ -29,19 +32,20 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     function captureFrame() {
-        canvas.width = video.videoWidth;
+       canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
-        const ctx = canvas.getContext("2d");
         ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
-        
-        // 📷 Kuvan esikäsittely
+
         let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
         let processedData = preprocessImage(imageData);
-        ctx.putImageData(processedData, 0, 0);
-        
-        let imageURL = canvas.toDataURL("image/png");
 
-        recognizeText(imageURL);
+        // ✅ Näytetään esikäsitelty kuva käyttöliittymässä
+        processedCanvas.width = processedData.width;
+        processedCanvas.height = processedData.height;
+        processedCtx.putImageData(processedData, 0, 0);
+
+        let imageUrl = processedCanvas.toDataURL("image/png");
+        recognizeText(imageUrl);
     }
 
     function preprocessImage(imageData) {
